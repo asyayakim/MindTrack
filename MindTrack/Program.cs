@@ -1,5 +1,7 @@
 using JsonFx.Serialization;
+using Microsoft.EntityFrameworkCore;
 using MindTrack;
+using MindTrack.Db;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,8 @@ var configuration = builder.Configuration;
 builder.Services.AddSingleton<DataReaderService>(provider =>
     new DataReaderService(configuration["AppSettings:DataFilePath"])
 );
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
