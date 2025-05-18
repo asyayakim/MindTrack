@@ -1,5 +1,5 @@
 # WORK IN PROGRESS
-#  MindTrack Data Pipeline
+##  MindTrack Data Pipeline
 
 A **high-performance C# data pipeline** for processing large-scale mental health datasets (600MB+ CSVs) with PostgreSQL integration. This system is a core component of the **MindTrack research platform**.
 
@@ -22,6 +22,10 @@ A **high-performance C# data pipeline** for processing large-scale mental health
 -  **Data Analysis Toolkit**
   - Supports filtering, aggregation, and statistical insights
 
+##  Dataset Source
+
+ **[Social Anxiety Dataset on Kaggle](https://www.kaggle.com/datasets/natezhang123/social-anxiety-dataset#)**  
+Provided by Nate Zhang – includes self-reported responses on mental health, lifestyle, and anxiety factors.
 
 ---
 
