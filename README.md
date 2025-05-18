@@ -32,7 +32,7 @@ Provided by Nate Zhang – includes self-reported responses on mental health, li
 ##  Technology Stack
 
 ### Core Framework
--  [.NET 8](https://dotnet.microsoft.com/)
+-  [.NET 9](https://dotnet.microsoft.com/)
 -  Console application architecture with **dependency injection**
 
 ### Data Processing
