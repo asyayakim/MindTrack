@@ -6,3 +6,4 @@ riderModule.iml
 *.xml
 MindTrack.sln
 MindTrack/family_anxiety_14_dataset.csv
+/MindTrack.Db/Migrations

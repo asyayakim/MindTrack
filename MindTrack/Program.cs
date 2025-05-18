@@ -10,11 +10,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 var configuration = builder.Configuration;
 
-builder.Services.AddSingleton<DataReaderService>(provider =>
-    new DataReaderService(configuration["AppSettings:DataFilePath"])
-);
+builder.Services.AddScoped<DataReaderService>(provider =>
+{
+    var configuration = provider.GetService<IConfiguration>();
+    var dbContext = provider.GetService<AppDbContext>();
+    var fileLocation = configuration["AppSettings:DataFilePath"];
+    return new DataReaderService(fileLocation, dbContext);
+});
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 

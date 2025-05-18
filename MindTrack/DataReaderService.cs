@@ -1,6 +1,7 @@
 using System.Globalization;
 using CsvHelper;
 using CsvHelper.Configuration;
+using MindTrack.Db;
 
 
 namespace MindTrack;
@@ -8,10 +9,12 @@ namespace MindTrack;
 public class DataReaderService
 {
     private List<SocialAnxietyRecord> _cachedData;
+    private readonly AppDbContext _context;
 
-    public DataReaderService(string fileLocation)
+    public DataReaderService(string fileLocation, AppDbContext context )
     {
         FileLocation = fileLocation;
+        _context = context;
     }
     public string FileLocation { get; init; }
 
@@ -69,7 +72,38 @@ public class DataReaderService
             return;
         }
 
-        Console.WriteLine($"Processing batch of {batch.Count} records...");
-       
+     
+    }
+
+   
+
+    public async Task<object> ImportLargeCsvAsync()
+    {
+        int totalInserted = 0;
+        int batchSize = 1000;
+        using var reader = new StreamReader(FileLocation);
+        using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+
+        var batch = new List<SocialAnxietyRecord>();
+        await foreach (var record in csv.GetRecordsAsync<SocialAnxietyRecord>())
+        {
+            batch.Add(record);
+
+            if (batch.Count >= batchSize)
+            {
+                _context.SocialAnxietyRecords.AddRange(batch);
+                await _context.SaveChangesAsync();
+                totalInserted += batch.Count;
+                batch.Clear();
+            }
+        }
+        if (batch.Count > 0)
+        {
+            _context.SocialAnxietyRecords.AddRange(batch);
+            await _context.SaveChangesAsync();
+            totalInserted += batch.Count;
+        }
+        return totalInserted;
+
     }
 }

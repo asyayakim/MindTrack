@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MindTrack.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class CsvFileController : ControllerBase
 {
     private readonly DataReaderService _data;
@@ -28,6 +28,21 @@ public class CsvFileController : ControllerBase
                 TotalPages = (int)Math.Ceiling(result.totalCount / (double)pageSize),
                 Data = result.data
             });
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
+
+    [HttpPut("import")]
+    public async Task<IActionResult> ImportLargeCsv()
+    {
+        try
+        {
+            var result = await _data.ImportLargeCsvAsync();;
+            return Ok($"Successfully inserted {result} records.");
         }
         catch (Exception e)
         {

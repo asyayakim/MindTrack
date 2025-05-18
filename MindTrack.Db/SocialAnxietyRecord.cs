@@ -8,6 +8,9 @@ namespace MindTrack;
 
 public class SocialAnxietyRecord
 {
+    [Ignore]
+    [Key]
+    public int? Id { get; set; }
     [Name("Age")]
     public int Age { get; set; }
 
